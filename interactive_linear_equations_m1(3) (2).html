@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ห้องทดลองสมการเชิงเส้นตัวแปรเดียว | ม.1</title>
+<style>
+:root{--navy:#183153;--blue:#3977d5;--sky:#eaf4ff;--pink:#ffedf3;--yellow:#fff6d8;--green:#16835f;--ink:#233044;--muted:#63738a;--white:#fff}
+*{box-sizing:border-box}body{margin:0;font-family:Tahoma,"Noto Sans Thai",sans-serif;color:var(--ink);background:linear-gradient(135deg,#edf6ff,#fff7fb 55%,#fff8df);line-height:1.6}
+header{padding:28px 18px 24px;text-align:center;background:linear-gradient(115deg,#244a82,#4e8de2);color:white}
+header .tag{display:inline-block;border:1px solid #ffffff80;border-radius:99px;padding:3px 12px;font-size:.9rem}.langbar{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}.langbtn{background:#fff;color:#244a82;border:1px solid #ffffff80;font-size:.9rem;padding:7px 12px}.translation{display:block;font-size:.86em;font-weight:400;color:#63738a;margin-top:3px}.bilingual-en{display:block;font-size:.9em;color:#2458a3;font-weight:700;margin-top:2px}
+h1{margin:8px 0;font-size:clamp(1.5rem,4vw,2.4rem)}header p{margin:0 auto;max-width:760px}
+main{max-width:1050px;margin:22px auto;padding:0 15px 36px;display:grid;gap:18px}
+.card{background:#ffffffed;border:1px solid #dbe6f3;border-radius:20px;padding:20px;box-shadow:0 8px 26px #294a7010}
+h2{font-size:1.25rem;margin:0 0 12px;color:var(--navy)}h3{margin:0 0 8px;font-size:1.05rem}
+.layout{display:grid;grid-template-columns:1fr 1fr;gap:18px}.controls{display:grid;gap:14px}
+.eq{font-size:clamp(1.6rem,4vw,2.3rem);font-weight:800;text-align:center;padding:15px;border-radius:15px;background:var(--sky);color:#1e4e91;letter-spacing:.5px}
+.rangebox{padding:12px;border-radius:14px;background:#f6f8fc}label{display:flex;justify-content:space-between;gap:10px;font-weight:700}input[type=range]{width:100%;accent-color:var(--blue);margin:12px 0 2px}
+button{border:0;border-radius:12px;padding:10px 15px;font:inherit;font-weight:700;cursor:pointer;background:var(--blue);color:white}button.secondary{background:#e9eff8;color:var(--navy)}button:focus-visible,input:focus-visible{outline:3px solid #f6c64d;outline-offset:3px}
+.buttons{display:flex;gap:8px;flex-wrap:wrap}.steps{display:grid;gap:9px}.step{display:flex;gap:12px;align-items:flex-start;padding:11px;border-radius:12px;background:#f5f8fc;border:1px solid #e4ebf5;transition:transform .25s,background .25s}.step.active{background:#e9f8f1;border-color:#9ad9c1;transform:translateX(3px)}.num{flex:0 0 29px;height:29px;border-radius:50%;display:grid;place-items:center;background:#dce9fb;color:#1d4e91;font-weight:800}
+.balance{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin-top:12px}.pan{min-height:94px;padding:12px;border-radius:15px;text-align:center;background:#f3f7ff;border:2px solid #cfe0fa;display:grid;align-content:center}.pan strong{font-size:1.5rem;color:#2458a3}.pan small{color:var(--muted)}.balance .equals{font-size:1.7rem;font-weight:800;color:var(--green)}
+.result{margin-top:14px;background:var(--yellow);border-radius:14px;padding:12px;text-align:center}.result strong{font-size:1.4rem;color:#7a5300}
+.tip{font-size:.94rem;color:var(--muted)}.quiz-item{border:1px solid #e0e8f2;border-radius:14px;padding:14px;margin:12px 0}.options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}.options button{background:#edf3fc;color:#23456f;text-align:left}.options button.chosen{outline:3px solid #f3c34e}.feedback{font-weight:700;margin-top:8px;min-height:1.5em}.good{color:var(--green)}.bad{color:#b43b55}.answer-key{display:none;background:#f0faf5;border-radius:12px;padding:12px;margin-top:12px}.answer-key.show{display:block}.footer{text-align:center;color:var(--muted);font-size:.88rem}
+@media(max-width:720px){.layout{grid-template-columns:1fr}.card{padding:16px}.balance{gap:5px}.pan{padding:8px}.options{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="langbar"><span class="tag" id="tagline">สื่อโต้ตอบคณิตศาสตร์ • ระดับชั้น ม.1</span> <button type="button" id="langToggle" class="langbtn" aria-label="Switch language">🌐 English + คำแปลไทย</button></div>
+  <h1>🔎 ห้องทดลองสมการเชิงเส้นตัวแปรเดียว</h1>
+  <p>ปรับค่าด้วยแถบเลื่อน ทดลองย้ายข้างอย่างสมดุล แล้วสังเกตว่าค่า x เปลี่ยนอย่างไร</p>
+</header>
+<main>
+<section class="card">
+  <h2>🎯 เป้าหมายการเรียนรู้</h2>
+  <p>นักเรียนสามารถหาคำตอบของสมการเชิงเส้นตัวแปรเดียว โดยใช้การดำเนินการเดียวกันทั้งสองข้างของสมการ และตรวจสอบคำตอบได้</p>
+  <p class="tip">สมการตัวอย่าง: <b>ax + b = c</b> โดย a ไม่เท่ากับ 0 ปรับค่า a, b และ c ได้จากแถบเลื่อนด้านล่าง</p>
+</section>
+<section class="card">
+  <h2>🧪 ทดลองปรับสมการแบบเรียลไทม์</h2>
+  <div class="layout">
+    <div class="controls">
+      <div class="rangebox">
+        <label for="a">ตัวคูณหน้าตัวแปร a <output id="av">2</output></label>
+        <input id="a" type="range" min="1" max="6" step="1" value="2">
+      </div>
+      <div class="rangebox">
+        <label for="b">ค่าคงตัว b <output id="bv">3</output></label>
+        <input id="b" type="range" min="-10" max="10" step="1" value="3">
+      </div>
+      <div class="rangebox">
+        <label for="c">ค่าด้านขวา c <output id="cv">13</output></label>
+        <input id="c" type="range" min="-15" max="25" step="1" value="13">
+      </div>
+      <div class="buttons">
+        <button id="random">สุ่มสมการใหม่</button>
+        <button class="secondary" id="reset">เริ่มใหม่</button>
+      </div>
+      <p class="tip">เทคนิค: กำจัดค่าคงตัวก่อน โดยลบ b ทั้งสองข้าง จากนั้นหารทั้งสองข้างด้วย a</p>
+    </div>
+    <div>
+      <div class="eq" id="equation">2x + 3 = 13</div>
+      <div class="balance" aria-label="ภาพเปรียบเทียบสองข้างของสมการ">
+        <div class="pan"><small>ด้านซ้าย</small><strong id="left">2x + 3</strong></div>
+        <div class="equals">=</div>
+        <div class="pan"><small>ด้านขวา</small><strong id="right">13</strong></div>
+      </div>
+      <div class="result">คำตอบคือ <strong id="answer">x = 5</strong><div id="check">ตรวจสอบ: 2(5) + 3 = 13 ✓</div></div>
+    </div>
+  </div>
+</section>
+<section class="card">
+  <h2>🪄 ดูวิธีทำทีละขั้น</h2>
+  <div class="steps" id="steps" aria-live="polite">
+    <div class="step active"><span class="num">1</span><div><b>เริ่มจากสมการ</b><div id="s1">2x + 3 = 13</div></div></div>
+    <div class="step"><span class="num">2</span><div><b>ลบค่าคงตัว b ทั้งสองข้าง</b><div id="s2">2x + 3 − 3 = 13 − 3</div></div></div>
+    <div class="step"><span class="num">3</span><div><b>จัดรูปสมการ</b><div id="s3">2x = 10</div></div></div>
+    <div class="step"><span class="num">4</span><div><b>หารทั้งสองข้างด้วย a</b><div id="s4">x = 10 ÷ 2 = 5</div></div></div>
+    <div class="step"><span class="num">5</span><div><b>ตรวจสอบคำตอบ</b><div id="s5">แทน x = 5 จะได้ 2(5) + 3 = 13 ✓</div></div></div>
+  </div>
+  <div class="buttons" style="margin-top:14px"><button id="play">▶ เล่นทีละขั้น</button><button class="secondary" id="next">ขั้นถัดไป</button></div>
+  <p class="tip" id="stepStatus" aria-live="polite">กด “เล่นทีละขั้น” เพื่อเน้นวิธีทำตามลำดับ</p>
+</section>
+<section class="card">
+  <h2>📝 คำถามท้ายกิจกรรม 3 ข้อ</h2>
+  <p>เลือกคำตอบที่ถูกต้อง แล้วกดตรวจคำตอบในแต่ละข้อ</p>
+  <div id="quiz"></div>
+  <div class="buttons"><button id="showAnswers" class="secondary">แสดงเฉลยทั้ง 3 ข้อ</button><button id="hideAnswers" class="secondary">ซ่อนเฉลย</button></div>
+  <div id="answerKey" class="answer-key">
+    <b>เฉลยพร้อมวิธีคิด</b>
+    <ol>
+      <li><b>3x + 4 = 19:</b> ลบ 4 ทั้งสองข้าง ได้ 3x = 15 แล้วหาร 3 ดังนั้น x = 5</li>
+      <li><b>5x − 6 = 9:</b> บวก 6 ทั้งสองข้าง ได้ 5x = 15 แล้วหาร 5 ดังนั้น x = 3</li>
+      <li><b>2x + 7 = 1:</b> ลบ 7 ทั้งสองข้าง ได้ 2x = −6 แล้วหาร 2 ดังนั้น x = −3</li>
+    </ol>
+  </div>
+</section>
+<p class="footer">สื่อการเรียนรู้นี้ทำงานได้ในเว็บเบราว์เซอร์โดยไม่ต้องเชื่อมต่ออินเทอร์เน็ต</p>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+let stepIndex=0, timer=null;
+function fmt(n){return Number.isInteger(n)?String(n):String(Number(n.toFixed(3)))}
+function expression(a,b){if(b===0)return `${a}x`;return `${a}x ${b>0?'+':'−'} ${Math.abs(b)}`}
+let languageMode='th';
+const staticTranslations = [
+ ['header h1','🔎 One-Variable Linear Equation Lab','🔎 ห้องทดลองสมการเชิงเส้นตัวแปรเดียว'],
+ ['header p','Adjust the sliders, keep both sides balanced, and observe how x changes.','ปรับค่าด้วยแถบเลื่อน ทดลองย้ายข้างอย่างสมดุล แล้วสังเกตว่าค่า x เปลี่ยนอย่างไร'],
+ ['main .card:nth-of-type(1) h2','🎯 Learning Goals','🎯 เป้าหมายการเรียนรู้'],
+ ['main .card:nth-of-type(1) p:not(.tip)','Students can solve a linear equation in one variable by performing the same operation on both sides and checking the answer.','นักเรียนสามารถหาคำตอบของสมการเชิงเส้นตัวแปรเดียว โดยใช้การดำเนินการเดียวกันทั้งสองข้างของสมการ และตรวจสอบคำตอบได้'],
+ ['main .card:nth-of-type(1) .tip','Example: ax + b = c, where a ≠ 0. Adjust a, b, and c using the sliders below.','สมการตัวอย่าง: ax + b = c โดย a ไม่เท่ากับ 0 ปรับค่า a, b และ c ได้จากแถบเลื่อนด้านล่าง'],
+ ['main .card:nth-of-type(2) h2','🧪 Explore the Equation in Real Time','🧪 ทดลองปรับสมการแบบเรียลไทม์'],
+ ['label[for="a"]','Coefficient of x (a)','ตัวคูณหน้าตัวแปร a'],
+ ['label[for="b"]','Constant term (b)','ค่าคงตัว b'],
+ ['label[for="c"]','Right-hand side (c)','ค่าด้านขวา c'],
+ ['#random','🎲 Generate a New Equation','สุ่มสมการใหม่'],
+ ['#reset','↻ Reset','เริ่มใหม่'],
+ ['.controls .tip','Tip: Remove the constant first by subtracting b from both sides. Then divide both sides by a.','เทคนิค: กำจัดค่าคงตัวก่อน โดยลบ b ทั้งสองข้าง จากนั้นหารทั้งสองข้างด้วย a'],
+ ['.pan:first-child small','Left side','ด้านซ้าย'],['.pan:last-child small','Right side','ด้านขวา'],
+ ['.result','The solution is','คำตอบคือ'],
+ ['main .card:nth-of-type(3) h2','🪄 Step-by-Step Solution','🪄 ดูวิธีทำทีละขั้น'],
+ ['.step:nth-child(1) b','Start with the equation','เริ่มจากสมการ'],
+ ['.step:nth-child(2) b','Subtract b from both sides','ลบค่าคงตัว b ทั้งสองข้าง'],
+ ['.step:nth-child(3) b','Simplify the equation','จัดรูปสมการ'],
+ ['.step:nth-child(4) b','Divide both sides by a','หารทั้งสองข้างด้วย a'],
+ ['.step:nth-child(5) b','Check the solution','ตรวจสอบคำตอบ'],
+ ['#play','▶ Play step by step','▶ เล่นทีละขั้น'],['#next','Next step','ขั้นถัดไป'],
+ ['main .card:nth-of-type(4) h2','📝 End-of-Activity Quiz (3 Questions)','📝 คำถามท้ายกิจกรรม 3 ข้อ'],
+ ['main .card:nth-of-type(4) > p','Choose the correct answer, then check each question.','เลือกคำตอบที่ถูกต้อง แล้วกดตรวจคำตอบในแต่ละข้อ'],
+ ['#showAnswers','Show all 3 answers','แสดงเฉลยทั้ง 3 ข้อ'],['#hideAnswers','Hide answers','ซ่อนเฉลย'],
+ ['#answerKey > b','Answers with explanations','เฉลยพร้อมวิธีคิด'],
+ ['.footer','This learning resource works in a web browser without an internet connection.','สื่อการเรียนรู้นี้ทำงานได้ในเว็บเบราว์เซอร์โดยไม่ต้องเชื่อมต่ออินเทอร์เน็ต']
+];
+function setLang(mode){
+ languageMode=mode;
+ staticTranslations.forEach(([sel,en,th])=>{const el=document.querySelector(sel);if(!el)return; if(el.dataset.originalHtml===undefined)el.dataset.originalHtml=el.innerHTML; if(mode==='en'){ if(sel==='.result'){el.innerHTML=`<span class="bilingual-en">${en}<span class="translation">${th}</span></span> <strong id="answer">${$('answer').textContent}</strong><div id="check">${$('check').textContent}</div>`;} else if(sel==='#random'||sel==='#reset'||sel==='#play'||sel==='#next'||sel==='#showAnswers'||sel==='#hideAnswers'){el.innerHTML=`${en}<span class="translation">${th}</span>`;} else {el.innerHTML=`${en}<span class="translation">${th}</span>`;} }else{el.innerHTML=el.dataset.originalHtml;}});
+ document.querySelectorAll('.rangebox label').forEach((el,i)=>{if(mode==='en'){const en=['Coefficient of x (a)','Constant term (b)','Right-hand side (c)'][i];const th=['ตัวคูณหน้าตัวแปร a','ค่าคงตัว b','ค่าด้านขวา c'][i];el.childNodes[0].textContent='';let span=el.querySelector('.langlabel');if(!span){span=document.createElement('span');span.className='langlabel';el.insertBefore(span,el.firstChild);}span.innerHTML=`${en}<span class="translation">${th}</span>`;}else{const span=el.querySelector('.langlabel');if(span)span.remove();el.childNodes[0].textContent=['ตัวคูณหน้าตัวแปร a ','ค่าคงตัว b ','ค่าด้านขวา c '][i];}});
+ const stepsEn=[['Start with the equation','เริ่มจากสมการ'],['Subtract constant b from both sides','ลบค่าคงตัว b ทั้งสองข้าง'],['Simplify the equation','จัดรูปสมการ'],['Divide both sides by a','หารทั้งสองข้างด้วย a'],['Check the solution','ตรวจสอบคำตอบ']];
+ document.querySelectorAll('.step b').forEach((el,i)=>{el.innerHTML=mode==='en'?`${stepsEn[i][0]}<span class="translation">${stepsEn[i][1]}</span>`:stepsEn[i][1];});
+ $('langToggle').textContent=mode==='th'?'🌐 English + คำแปลไทย':'🌐 ภาษาไทย';
+ update(); renderQuizLanguage();
+}
+function renderQuizLanguage(){
+ const qsEn=[['Solve for x: 3x + 4 = 19','จงหาค่า x: 3x + 4 = 19'],['Solve for x: 5x − 6 = 9','จงหาค่า x: 5x − 6 = 9'],['Solve for x: 2x + 7 = 1','จงหาค่า x: 2x + 7 = 1']];
+ document.querySelectorAll('.quiz-item h3').forEach((el,i)=>{if(languageMode==='en')el.innerHTML=`${qsEn[i][0]}<span class="translation">${qsEn[i][1]}</span>`;else el.textContent=questions[i].q;});
+ document.querySelectorAll('.checkq').forEach(el=>{el.innerHTML=languageMode==='en'?'Check Answer<span class="translation">ตรวจคำตอบ</span>':'ตรวจคำตอบ';});
+}
+$('langToggle').addEventListener('click',()=>setLang(languageMode==='th'?'en':'th'));
+function update(){
+ const a=+$('a').value,b=+$('b').value,c=+$('c').value,x=(c-b)/a;
+ $('av').textContent=a;$('bv').textContent=b;$('cv').textContent=c;
+ const eq=`${expression(a,b)} = ${c}`;
+ $('equation').textContent=eq;$('left').textContent=expression(a,b);$('right').textContent=c;
+ $('answer').textContent=`x = ${fmt(x)}`;
+ $('check').innerHTML=languageMode==='en'?`Check: ${a}(${fmt(x)}) ${b===0?'':b>0?'+ '+b:'− '+Math.abs(b)} = ${fmt(a*x+b)} ${Math.abs(a*x+b-c)<1e-8?'✓':' '}<span class="translation">ตรวจสอบคำตอบ</span>`:`ตรวจสอบ: ${a}(${fmt(x)}) ${b===0?'':b>0?'+ '+b:'− '+Math.abs(b)} = ${fmt(a*x+b)} ${Math.abs(a*x+b-c)<1e-8?'✓':' '}`;
+ $('s1').textContent=eq;
+ $('s2').textContent=b===0?`${a}x = ${c}`:`${expression(a,b)} ${b>0?'− '+b:'+ '+Math.abs(b)} = ${c} ${b>0?'− '+b:'+ '+Math.abs(b)}`;
+ $('s3').textContent=`${a}x = ${fmt(c-b)}`;
+ $('s4').textContent=`x = ${fmt(c-b)} ÷ ${a} = ${fmt(x)}`;
+ $('s5').textContent=`แทน x = ${fmt(x)} จะได้ ${a}(${fmt(x)}) ${b===0?'':b>0?'+ '+b:'− '+Math.abs(b)} = ${fmt(a*x+b)} ✓`;
+ highlightStep(stepIndex);
+}
+function highlightStep(i){document.querySelectorAll('.step').forEach((el,j)=>el.classList.toggle('active',j===i));$('stepStatus').innerHTML=languageMode==='en'?`Viewing step ${i+1} of 5<span class="translation">กำลังดูขั้นที่ ${i+1} จาก 5</span>`:`กำลังดูขั้นที่ ${i+1} จาก 5`}
+function stop(){if(timer){clearInterval(timer);timer=null}$('play').innerHTML=languageMode==='en'?'▶ Play step by step<span class="translation">เล่นทีละขั้น</span>':'▶ เล่นทีละขั้น'}
+$('a').addEventListener('input',update);$('b').addEventListener('input',update);$('c').addEventListener('input',update);
+$('reset').addEventListener('click',()=>{$('a').value=2;$('b').value=3;$('c').value=13;stepIndex=0;stop();update()});
+$('random').addEventListener('click',()=>{$('a').value=1+Math.floor(Math.random()*6);$('b').value=-10+Math.floor(Math.random()*21);$('c').value=-15+Math.floor(Math.random()*41);stepIndex=0;stop();update()});
+$('next').addEventListener('click',()=>{stop();stepIndex=(stepIndex+1)%5;highlightStep(stepIndex)});
+$('play').addEventListener('click',()=>{if(timer){stop();return}stepIndex=0;highlightStep(stepIndex);$('play').innerHTML=languageMode==='en'?'⏸ Pause<span class="translation">หยุด</span>':'⏸ หยุด';timer=setInterval(()=>{stepIndex++;if(stepIndex>=5){stop();stepIndex=4;highlightStep(stepIndex);return}highlightStep(stepIndex)},1200)});
+const questions=[
+ {q:'1) จงหาค่า x: 3x + 4 = 19',opts:['x = 3','x = 5','x = 7','x = 15'],correct:1,why:'ลบ 4 ทั้งสองข้าง ได้ 3x = 15 แล้วหาร 3 จึงได้ x = 5'},
+ {q:'2) จงหาค่า x: 5x − 6 = 9',opts:['x = 1','x = 2','x = 3','x = 5'],correct:2,why:'บวก 6 ทั้งสองข้าง ได้ 5x = 15 แล้วหาร 5 จึงได้ x = 3'},
+ {q:'3) จงหาค่า x: 2x + 7 = 1',opts:['x = −4','x = −3','x = 3','x = 4'],correct:1,why:'ลบ 7 ทั้งสองข้าง ได้ 2x = −6 แล้วหาร 2 จึงได้ x = −3'}
+];
+questions.forEach((q,qi)=>{
+ const box=document.createElement('div');box.className='quiz-item';box.innerHTML=`<h3>${q.q}</h3><div class="options">${q.opts.map((o,i)=>`<button type="button" data-q="${qi}" data-o="${i}">${o}</button>`).join('')}</div><div class="feedback" id="feedback${qi}" aria-live="polite"></div><button type="button" class="secondary checkq" data-check="${qi}">ตรวจคำตอบ</button>`;
+ $('quiz').appendChild(box);
+});
+const selected={};
+document.querySelectorAll('.options button').forEach(btn=>btn.addEventListener('click',()=>{const q=+btn.dataset.q;selected[q]=+btn.dataset.o;document.querySelectorAll(`button[data-q="${q}"]`).forEach(b=>b.classList.toggle('chosen',b===btn));$(`feedback${q}`).textContent='';}));
+document.querySelectorAll('.checkq').forEach(btn=>btn.addEventListener('click',()=>{const i=+btn.dataset.check,fb=$(`feedback${i}`);if(selected[i]===undefined){fb.className='feedback bad';fb.innerHTML=languageMode==='en'?'Please choose an answer first.<span class="translation">กรุณาเลือกคำตอบก่อน</span>':'กรุณาเลือกคำตอบก่อน';return}const q=questions[i];fb.className='feedback '+(selected[i]===q.correct?'good':'bad');fb.innerHTML=languageMode==='en'?`${selected[i]===q.correct?'Correct! ':'Not quite. Try reviewing again. '}${[['Subtract 4 from both sides to get 3x = 15, then divide by 3: x = 5.','ลบ 4 ทั้งสองข้าง ได้ 3x = 15 แล้วหาร 3 จึงได้ x = 5'],['Add 6 to both sides to get 5x = 15, then divide by 5: x = 3.','บวก 6 ทั้งสองข้าง ได้ 5x = 15 แล้วหาร 5 จึงได้ x = 3'],['Subtract 7 from both sides to get 2x = −6, then divide by 2: x = −3.','ลบ 7 ทั้งสองข้าง ได้ 2x = −6 แล้วหาร 2 จึงได้ x = −3']][i][0]}<span class="translation">${selected[i]===q.correct?'ถูกต้อง! ':'ยังไม่ถูก ลองทบทวนอีกครั้ง '}${q.why}</span>`:(selected[i]===q.correct?'ถูกต้อง! ':'ยังไม่ถูก ลองทบทวนอีกครั้ง ') + q.why;}));
+$('showAnswers').addEventListener('click',()=>$('answerKey').classList.add('show'));
+$('hideAnswers').addEventListener('click',()=>$('answerKey').classList.remove('show'));
+update();
+</script>
+</body>
+</html>
